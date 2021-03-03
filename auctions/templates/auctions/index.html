@@ -1,0 +1,47 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+    {% if title %}
+    <h2>{{title}}</h2>
+    {% else %}
+    <h2>Active Listings</h2>
+    {% endif %}
+
+
+    {% if watchlist and empty == 0 %}
+        {% for i in listings %}
+          {% for j in watchlist %}
+            {% if i.id == j.listing_id%}
+              <div class="card" style="width: 18rem;">
+                <img class="card-img-top" src="{{i.image_url}}" alt="Image Not Found">
+                <div class="card-body">
+                  <h5 class="card-title">{{i.title}}</h5>
+                  <p class="card-text">{{i.description}}</p>
+                  <p class="card-text">${{i.starting_bid}}</p>
+                  <a href="{% url 'listing' i.id %}" class="btn btn-primary">More Info</a>
+                </div>
+              </div>
+            {% endif %}
+          {% endfor %}
+        {% endfor %}
+    {% elif empty == 1 %}
+        <h3>No Items Being Watched</h3>
+    {% elif empty == 2 %}
+        <h3>Not Signed In.</h3>
+    {% else %}
+      {% for i in listings %}
+        {% if i.active == True %}
+          <div class="card" style="width: 18rem;">
+            <img class="card-img-top" src="{{i.image_url}}" alt="Image Not Found">
+            <div class="card-body">
+              <h5 class="card-title">{{i.title}}</h5>
+              <p class="card-text">{{i.description}}</p>
+              <p class="card-text">${{i.starting_bid}}</p>
+              <a href="{% url 'listing' i.id %}" class="btn btn-primary">More Info</a>
+            </div>
+          </div>
+        {% endif %}
+      {% endfor %}
+    {% endif %}
+
+{% endblock %}
